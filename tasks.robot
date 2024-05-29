@@ -79,8 +79,9 @@ Login With Magento Credentials
     ${meganto_account_credentials}=    Set Variable    ${meganto_account_credentials}[value]
     ${meganto_account_credentials}=    Convert String to JSON    ${meganto_account_credentials}
 
+
     Wait Until Keyword Succeeds
-    ...    3x
+    ...    3x    
     ...    1s
     ...    Login With Credentials
     ...    ${meganto_account_credentials}[username]
@@ -175,6 +176,7 @@ Add Product To Cart By Color, Size And Price
 Process To Product
     [Documentation]    Go To Detail Product And Check Product By Size, Color And Price Then Add Product
     [Arguments]    ${link}
+
     Go To    ${link}
     ${check_product_to_cart}=    Check Product By Size, Color And Price
     IF    ${check_product_to_cart}
@@ -184,6 +186,7 @@ Process To Product
 
 Get Product In Page
     [Documentation]    Go To Detail Product In Page
+
     ${product_links}=    Get Product Links
     ${total_links}=    Get Length    ${product_links}
     ${count_empty_link}=    Set Variable    0
@@ -211,6 +214,7 @@ Get Product In Page
 
 Get Product Links
     [Documentation]    Retrieve the links of all products listed on the current page.
+
     @{product_elements}=    Get WebElements
     ...    css:ol.products.list.items.product-items li.item.product.product-item a.product.photo.product-item-photo
     @{product_links}=    Create List
@@ -317,6 +321,7 @@ Check Product By Size, Color And Price
 Check Size Exists
     [Documentation]    Verify if the specified size exists for the product
     [Arguments]    ${size}
+
     ${sizes}=    Get WebElements    css:.swatch-option.text
     ${size_found}=    Set Variable    ${FALSE}
     FOR    ${elem}    IN    @{sizes}
@@ -331,6 +336,7 @@ Check Size Exists
 
 Check Price Exists
     [Documentation]    Verify if the product price falls within a specified range
+
     ${below_price}=    Get In Arg    below_price
     ${below_price_value}=    Set Variable    ${below_price}[value]
 
@@ -349,6 +355,7 @@ Check Price Exists
 Check Color Exists
     [Documentation]    Verify if the specified color exists for the product
     [Arguments]    ${color}
+
     ${colors}=    Get WebElements    css:.swatch-option.color
     ${color_found}=    Set Variable    ${FALSE}
     FOR    ${element}    IN    @{colors}
@@ -363,6 +370,7 @@ Check Color Exists
 
 Input Quantity Product
     [Documentation]    Enters the specified quantity of the product into the corresponding field on the webpage
+
     ${quantity}=    Get In Arg    quantity
     ${quantity_value}=    Set Variable    ${quantity}[value]
 
@@ -371,6 +379,7 @@ Input Quantity Product
 
 Save Infomation Product
     [Documentation]    Temporarily stores the product information such as name, price, and quantity of each item in the shopping cart
+
     ${global_product_info}=    Create List
     Wait Until Element Is Visible    xpath://table[@id='shopping-cart-table']    timeout=30s
     ${tbody}=    Get Webelements    xpath://table[@id='shopping-cart-table']/tbody
@@ -397,6 +406,7 @@ Save Infomation Product
 
 Check Status Payment And Get Order Number
     [Documentation]    Checks the payment status and retrieves the order number if the payment is successful
+
     ${is_visible}=    Run Keyword And Return Status
     ...    Element Should Be Visible
     ...    xpath://div[@class='checkout-success']
@@ -407,6 +417,7 @@ Check Status Payment And Get Order Number
 
 Create File Excel Data
     [Documentation]    Creates a new Excel file to store product information and order numbers
+
     Create Workbook    data_magento.xlsx
     Set Worksheet Value    1    1    Name
     Set Worksheet Value    1    2    Quantity
@@ -419,6 +430,7 @@ Create File Excel Data
 Save Infomation By Excel Files
     [Documentation]    Saves the information of each product along with the order number, color, and size into the Excel file
     [Arguments]    ${product}    ${order_number}    ${color}    ${size}    ${current_time}
+
     ${row}=    Create Dictionary
     ...    Name=${product['name_product']}
     ...    Price=${product['price_product']}
@@ -430,6 +442,8 @@ Save Infomation By Excel Files
     Append Rows To Worksheet    ${row}    header=True
 
 Log Out Website
+    [Documentation]    Log in to the user account
+
     Wait Until Element Is Visible    xpath://a[@class="logo"]
     Click Element    xpath://a[@class="logo"]
     Wait Until Element Is Visible    xpath://span[@class="customer-name"]
